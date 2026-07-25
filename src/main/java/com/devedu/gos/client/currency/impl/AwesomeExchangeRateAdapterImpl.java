@@ -2,7 +2,6 @@ package com.devedu.gos.client.currency.impl;
 
 import com.devedu.gos.client.currency.ExchangeRateAdapter;
 import com.devedu.gos.client.dto.AwesomeApiCurrencyResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -13,8 +12,13 @@ import java.util.Map;
 @Component
 public class AwesomeExchangeRateAdapterImpl implements ExchangeRateAdapter {
 
-    @Autowired
-    private RestClient restClient;
+    private final RestClient restClient;
+
+    public AwesomeExchangeRateAdapterImpl(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder
+                .baseUrl("https://economia.awesomeapi.com.br/last")
+                .build();
+    }
 
     @Override
     public BigDecimal getExchangeRate(String fromCurrency) {

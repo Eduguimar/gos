@@ -1,7 +1,6 @@
 package com.devedu.gos.service.shipping.fee;
 
 import com.devedu.gos.model.ShippingTypeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,8 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class FeeStrategyFactory {
 
-    @Autowired
-    private Map<String, FeeStrategy> strategies;
+    private final Map<String, FeeStrategy> strategies;
 
     public FeeStrategyFactory(List<FeeStrategy> strategyList) {
         this.strategies = strategyList.stream().collect(Collectors.toMap(s ->

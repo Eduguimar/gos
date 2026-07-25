@@ -5,6 +5,7 @@ import com.devedu.gos.controller.dto.OrderRequestDTO;
 import com.devedu.gos.controller.dto.OrderResponseDTO;
 import com.devedu.gos.model.Order;
 import com.devedu.gos.model.OrderBuilder;
+import com.devedu.gos.model.ShippingTypeEnum;
 import com.devedu.gos.repository.OrderRepository;
 import com.devedu.gos.service.shipping.fee.FeeStrategy;
 import com.devedu.gos.service.shipping.fee.FeeStrategyFactory;
@@ -36,7 +37,7 @@ public class OrderService {
         BigDecimal rate = exchangeRateAdapter.getExchangeRate(orderRequestDTO.currency());
 
         BigDecimal baseConverted = orderRequestDTO.amount().multiply(rate);
-        FeeStrategy strategy = feeStrategyFactory.getStrategy(orderRequestDTO.shippingType());
+        FeeStrategy strategy = feeStrategyFactory.getStrategy(ShippingTypeEnum.valueOf(orderRequestDTO.shippingType()));
         BigDecimal fee = strategy.calculateFee(baseConverted);
 
         Order order = OrderBuilder.builder()
@@ -44,7 +45,7 @@ public class OrderService {
                 .currency(orderRequestDTO.currency())
                 .originalAmount(orderRequestDTO.amount())
                 .exchangeRate(rate)
-                .shippingType(orderRequestDTO.shippingType())
+                .shippingType(ShippingTypeEnum.valueOf(orderRequestDTO.shippingType()))
                 .calculateTotals(fee)
                 .build();
 
